@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model Order {
+  id             String      @id @default(uuid())
+  shopifyOrderId BigInt      @unique
+  storeName      String
+  status         OrderStatus @default(PENDING)
+  customerName   String?
+  customerEmail  String?
+  totalProducts  Int
+  hasFragile     Boolean     @default(false)
+  errorMessage   String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  items     OrderItem[]
+  materials OrderMaterial[]
+  events    OrderEvent[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  productId String
+  sku       String
+  name      String
+  quantity  Int
+  isFragile Boolean @default(false)
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
+
+model Material {
+  code      String   @id
+  name      String
+  stock     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders OrderMaterial[]
+
+  @@map("materials")
+}
+
+model OrderMaterial {
+  id           String   @id @default(uuid())
+  orderId      String
+  materialCode String
+  quantity     Int
+  createdAt    DateTime @default(now())
+
+  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  material Material @relation(fields: [materialCode], references: [code])
+
+  @@map("order_materials")
+}
+
+model OrderEvent {
+  id        String   @id @default(uuid())
+  orderId   String
+  type      String
+  payload   Json?
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_events")
+}

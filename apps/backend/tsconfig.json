@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "../../",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@test_2/share-types": ["packages/share/types"],
+      "@test_2/share-types/*": ["packages/share/types/*"],
+      "@test_2/share-utils": ["packages/share/utils"],
+      "@test_2/share-utils/*": ["packages/share/utils/*"],
+      "@test_2/backend-orders": ["packages/backend/orders"],
+      "@test_2/backend-inventory": ["packages/backend/inventory"],
+      "@test_2/backend-packaging": ["packages/backend/packaging"],
+      "@test_2/prisma": ["packages/prisma"]
+    }
+  }
+}

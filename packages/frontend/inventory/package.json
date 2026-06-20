@@ -1,0 +1,12 @@
+{
+  "name": "@test_2/frontend-inventory",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.ts",
+  "dependencies": {
+    "@shopify/polaris": "^12.3.0",
+    "pinia": "^2.1.7",
+    "vue": "^3.4.5",
+    "axios": "^1.6.5"
+  }
+}

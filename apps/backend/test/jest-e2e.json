@@ -1,0 +1,15 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "../../",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@test_2/share-types(|/.*)$": "<rootDir>/packages/share/types/$1",
+    "^@test_2/share-utils(|/.*)$": "<rootDir>/packages/share/utils/$1",
+    "^@test_2/backend-(.*)$": "<rootDir>/packages/backend/$1",
+    "^@test_2/prisma(|/.*)$": "<rootDir>/packages/prisma/$1"
+  }
+}

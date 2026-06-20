@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "../../",
+    "paths": {
+      "@test_2/frontend-auth": ["packages/frontend/auth"],
+      "@test_2/frontend-order": ["packages/frontend/order"],
+      "@test_2/frontend-inventory": ["packages/frontend/inventory"],
+      "@test_2/frontend-summary": ["packages/frontend/summary"],
+      "@test_2/share-types": ["packages/share/types"],
+      "@test_2/share-types/*": ["packages/share/types/*"],
+      "@test_2/share-utils": ["packages/share/utils"],
+      "@test_2/share-utils/*": ["packages/share/utils/*"]
+    },
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "../../packages/frontend/**/*.ts", "../../packages/share/**/*.ts"]
+}
