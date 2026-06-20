@@ -1,21 +1,12 @@
-FROM node:22-alpine AS builder
-RUN apk add --no-cache openssl
+FROM node:22-alpine
 WORKDIR /app
 
 COPY . .
 
+RUN apk add --no-cache openssl libc6-compat
 RUN npm install
 RUN npx -w packages/prisma prisma generate
 RUN npm run build -w apps/backend
-
-FROM node:22-alpine AS runner
-RUN apk add --no-cache openssl
-WORKDIR /app
-
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/packages ./packages
-COPY --from=builder /app/apps/backend/dist ./apps/backend/dist
-COPY --from=builder /app/apps/backend/package.json ./apps/backend/package.json
 
 COPY apps/backend/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

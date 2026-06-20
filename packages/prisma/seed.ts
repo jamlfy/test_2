@@ -16,8 +16,8 @@ async function main() {
 
   for (const material of materials) {
     await prisma.$executeRawUnsafe(
-      `INSERT INTO materials (code, name, stock) VALUES ($1, $2, $3)
-       ON CONFLICT (code) DO UPDATE SET name = EXCLUDED.name, stock = EXCLUDED.stock`,
+      `INSERT INTO materials (code, name, stock, "updatedAt") VALUES ($1, $2, $3, NOW())
+       ON CONFLICT (code) DO UPDATE SET name = EXCLUDED.name, stock = EXCLUDED.stock, "updatedAt" = NOW()`,
       material.code,
       material.name,
       material.stock,
