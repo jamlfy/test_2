@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BullMQModule } from '@nestjs/bullmq';
+import { BullModule } from '@nestjs/bullmq';
 import { OrderController } from './order.controller';
 import { OrderProcessor } from './order.processor';
 import { QueueService } from './queue.service';
@@ -14,7 +14,7 @@ import { QUEUE_NAMES } from '@test_2/share-utils';
   imports: [
     InventoryModule,
     PackagingModule,
-    BullMQModule.registerQueue({
+    BullModule.registerQueue({
       name: QUEUE_NAMES.ORDERS,
     }),
   ],

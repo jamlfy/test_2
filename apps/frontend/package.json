@@ -54,21 +54,21 @@
     "testRegex": ".*\\.spec\\.ts$",
     "globals": {
       "vue-jest": {
-        "tsConfig": "apps/frontend/tsconfig.json"
+        "tsConfig": "tsconfig.json"
       }
     },
     "transform": {
       "^.+\\.(t|j)s$": [
         "ts-jest",
         {
-          "tsconfig": "apps/frontend/tsconfig.json",
+          "tsconfig": "tsconfig.json",
           "diagnostics": false
         }
       ],
       ".*\\.vue$": [
         "@vue/vue3-jest",
         {
-          "tsconfig": "apps/frontend/tsconfig.json"
+          "tsconfig": "tsconfig.json"
         }
       ]
     },

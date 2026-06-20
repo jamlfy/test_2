@@ -58,7 +58,7 @@
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": ["ts-jest", {
-        "tsconfig": "apps/backend/tsconfig.json",
+        "tsconfig": "tsconfig.json",
         "diagnostics": false
       }]
     },
