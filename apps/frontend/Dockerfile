@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY . .
 RUN npm install
-RUN npm run build -w apps/frontend
+RUN npm run build:front
 
 FROM nginx:alpine AS runner
 COPY apps/frontend/nginx.conf /etc/nginx/conf.d/default.conf

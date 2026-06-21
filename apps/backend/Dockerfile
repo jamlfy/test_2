@@ -6,7 +6,7 @@ COPY . .
 RUN apk add --no-cache openssl libc6-compat
 RUN npm install
 RUN npx -w packages/prisma prisma generate
-RUN npm run build -w apps/backend
+RUN npm run build:back
 
 COPY apps/backend/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
