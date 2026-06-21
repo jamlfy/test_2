@@ -90,9 +90,9 @@ describe('OrderProcessor', () => {
     await processor.process(job);
 
     expect(orderService.updateOrderStatus).toHaveBeenCalledWith('order-1', OrderStatus.PROCESSING);
-    expect(packagingService.calcularMateriales).toHaveBeenCalledWith(
-      [{ productId: 'prod-1', sku: 'SKU001', name: 'Widget', quantity: 2, isFragile: false }],
-    );
+    expect(packagingService.calcularMateriales).toHaveBeenCalledWith([
+      { productId: 'prod-1', sku: 'SKU001', name: 'Widget', quantity: 2, isFragile: false },
+    ]);
     expect(inventoryService.consumeMaterials).toHaveBeenCalledWith('order-1', mockMaterials);
     expect(orderService.updateOrderStatus).toHaveBeenCalledWith('order-1', OrderStatus.COMPLETED);
   });
@@ -104,7 +104,9 @@ describe('OrderProcessor', () => {
     await expect(processor.process(job)).rejects.toThrow('Stock insuficiente');
 
     expect(orderService.updateOrderStatus).toHaveBeenCalledWith(
-      'order-1', OrderStatus.FAILED, 'Stock insuficiente',
+      'order-1',
+      OrderStatus.FAILED,
+      'Stock insuficiente',
     );
   });
 
@@ -127,7 +129,9 @@ describe('OrderProcessor', () => {
 
     await expect(processor.process(job)).rejects.toThrow('DB timeout');
     expect(orderService.updateOrderStatus).toHaveBeenCalledWith(
-      'order-1', OrderStatus.FAILED, 'DB timeout',
+      'order-1',
+      OrderStatus.FAILED,
+      'DB timeout',
     );
   });
 

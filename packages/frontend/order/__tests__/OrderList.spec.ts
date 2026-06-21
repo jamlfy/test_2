@@ -8,6 +8,7 @@ jest.mock('vue-router', () => ({
 }));
 
 jest.mock('../StatusBadge.vue', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { h } = require('vue');
   return {
     default: {

@@ -30,7 +30,13 @@ describe('OrderEntity', () => {
     });
 
     it('should set customer info when provided', () => {
-      const order = OrderEntity.create(12347, 'test-store', mockItems, 'John Doe', 'john@example.com');
+      const order = OrderEntity.create(
+        12347,
+        'test-store',
+        mockItems,
+        'John Doe',
+        'john@example.com',
+      );
 
       expect(order.customerName).toBe('John Doe');
       expect(order.customerEmail).toBe('john@example.com');

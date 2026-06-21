@@ -53,17 +53,29 @@
     "webpack-node-externals": "^3.0.0"
   },
   "jest": {
-    "roots": ["<rootDir>/packages/backend", "<rootDir>/apps/backend"],
-    "moduleFileExtensions": ["js", "json", "ts"],
+    "roots": [
+      "<rootDir>/packages/backend",
+      "<rootDir>/apps/backend"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
     "rootDir": "../../",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
-      "^.+\\.(t|j)s$": ["ts-jest", {
-        "tsconfig": "tsconfig.json",
-        "diagnostics": false
-      }]
+      "^.+\\.(t|j)s$": [
+        "ts-jest",
+        {
+          "tsconfig": "tsconfig.json",
+          "diagnostics": false
+        }
+      ]
     },
-    "collectCoverageFrom": ["packages/backend/**/*.(t|j)s"],
+    "collectCoverageFrom": [
+      "packages/backend/**/*.(t|j)s"
+    ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {

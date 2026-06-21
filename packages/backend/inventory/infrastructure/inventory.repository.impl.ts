@@ -5,16 +5,11 @@ import { InventoryRepository, ConsumeResult } from '../domain/inventory.reposito
 
 @Injectable()
 export class InventoryRepositoryImpl extends InventoryRepository {
-  constructor(
-    @Inject('PRISMA_CLIENT') private readonly prisma: PrismaClient,
-  ) {
+  constructor(@Inject('PRISMA_CLIENT') private readonly prisma: PrismaClient) {
     super();
   }
 
-  async consumeMaterials(
-    orderId: string,
-    materials: CalculatedMaterial[],
-  ): Promise<ConsumeResult> {
+  async consumeMaterials(orderId: string, materials: CalculatedMaterial[]): Promise<ConsumeResult> {
     try {
       await this.prisma.$executeRawUnsafe('BEGIN');
 

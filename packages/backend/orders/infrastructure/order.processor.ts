@@ -8,6 +8,7 @@ import { PackagingService } from '@test_2/backend-packaging';
 import { OrderStatus } from '@test_2/share-types';
 
 import { QUEUE_NAMES } from '@test_2/share-utils';
+
 @Processor(QUEUE_NAMES.ORDERS)
 export class OrderProcessor extends WorkerHost {
   constructor(

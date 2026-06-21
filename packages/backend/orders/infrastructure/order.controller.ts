@@ -1,26 +1,13 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Param,
-  Query,
-  Body,
-  HttpCode,
-  HttpStatus,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
   ApiResponse,
-  ApiQuery,
   ApiBearerAuth,
   ApiExcludeEndpoint,
 } from '@nestjs/swagger';
 import { OrderService } from '../application/order.service';
-import { OrderStatus } from '@test_2/share-types';
 import {
-  OrderResponseDto,
   OrderDetailResponseDto,
   PaginatedOrdersDto,
   OrderFilterDto,
@@ -38,10 +25,11 @@ export class OrderController {
     private readonly inventoryService: InventoryService,
   ) {}
 
-  @Post('webhooks/shopify/order')
+  @Post('webhooks/order')
   @HttpCode(HttpStatus.OK)
   @ApiExcludeEndpoint()
   async handleWebhook(@Body() body: ShopifyWebhookDto) {
+    console.log('Test');
     const storeName = body.name || 'shopify-store';
     return this.orderService.processWebhook(body as any, storeName);
   }
@@ -57,6 +45,7 @@ export class OrderController {
       limit: filter.limit || 20,
       sortBy: filter.sortBy || 'createdAt',
       sortOrder: filter.sortOrder || 'desc',
+      search: filter.search,
     });
   }
 

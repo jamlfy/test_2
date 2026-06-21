@@ -13,18 +13,23 @@
               <s-button variant="tertiary" @click="logout()">Cerrar sesión</s-button>
             </s-stack>
           </s-popover>
-          <s-button commandFor="user-menu-popover">
+          <s-button command-for="user-menu-popover">
             {{ user?.name || 'Usuario' }}
           </s-button>
         </template>
         <s-button v-else @click="loginWithRedirect()">Iniciar sesión</s-button>
       </div>
-      <button v-if="isAuthenticated" class="mobile-nav-toggle" @click="showMobileNav = !showMobileNav" aria-label="Toggle navigation">
+      <button
+        v-if="isAuthenticated"
+        class="mobile-nav-toggle"
+        aria-label="Toggle navigation"
+        @click="showMobileNav = !showMobileNav"
+      >
         ☰
       </button>
     </header>
 
-    <div class="app-layout" v-if="isAuthenticated">
+    <div v-if="isAuthenticated" class="app-layout">
       <nav class="sidebar" :class="{ open: showMobileNav }">
         <s-stack direction="block" gap="small-200" padding="base">
           <s-button
@@ -32,13 +37,10 @@
             :key="item.label"
             variant="tertiary"
             :tone="item.selected ? 'auto' : 'neutral'"
+            style="justify-content: flex-start; width: 100%"
             @click="navigate(item.url)"
-            style="justify-content: flex-start; width: 100%;"
           >
-            <s-icon
-              :type="item.label === 'Dashboard' ? 'home' : 'order'"
-              size="small"
-            />
+            <s-icon :type="item.label === 'Dashboard' ? 'home' : 'order'" size="small" />
             {{ item.label }}
           </s-button>
         </s-stack>

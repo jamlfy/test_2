@@ -1,10 +1,12 @@
 const nodeExternals = require('webpack-node-externals');
 
-module.exports = function(options) {
+module.exports = function (options) {
   return {
     ...options,
-    externals: [nodeExternals({
-      allowlist: [/^@test_2/],
-    })],
+    externals: [
+      nodeExternals({
+        allowlist: [/^@test_2/],
+      }),
+    ],
   };
 };

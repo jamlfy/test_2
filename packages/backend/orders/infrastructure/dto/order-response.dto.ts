@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsEnum, IsString, IsNumber, IsIn } from 'class-validator';
+import { Type } from 'class-transformer';
 import { OrderStatus } from '@test_2/share-types';
 
 export class OrderItemResponseDto {
@@ -51,11 +53,37 @@ export class PaginatedOrdersDto {
 }
 
 export class OrderFilterDto {
-  @ApiProperty({ enum: OrderStatus, required: false }) status?: OrderStatus;
-  @ApiProperty({ required: false, default: 1 }) page?: number;
-  @ApiProperty({ required: false, default: 20 }) limit?: number;
-  @ApiProperty({ required: false, default: 'createdAt' }) sortBy?: string;
-  @ApiProperty({ required: false, enum: ['asc', 'desc'], default: 'desc' }) sortOrder?: 'asc' | 'desc';
+  @ApiProperty({ enum: OrderStatus, required: false })
+  @IsOptional()
+  @IsEnum(OrderStatus)
+  status?: OrderStatus;
+
+  @ApiProperty({ required: false, default: 1 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  page?: number;
+
+  @ApiProperty({ required: false, default: 20 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  limit?: number;
+
+  @ApiProperty({ required: false, default: 'createdAt' })
+  @IsOptional()
+  @IsString()
+  sortBy?: string;
+
+  @ApiProperty({ required: false, enum: ['asc', 'desc'], default: 'desc' })
+  @IsOptional()
+  @IsIn(['asc', 'desc'])
+  sortOrder?: 'asc' | 'desc';
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  search?: string;
 }
 
 export class DashboardSummaryDto {

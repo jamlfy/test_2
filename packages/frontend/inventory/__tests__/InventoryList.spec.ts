@@ -71,9 +71,7 @@ describe('InventoryList.vue', () => {
   });
 
   it('should show low stock badge for materials with stock < 10', () => {
-    const materials = [
-      { code: 'BOX_LARGE', name: 'Caja grande', stock: 5 },
-    ];
+    const materials = [{ code: 'BOX_LARGE', name: 'Caja grande', stock: 5 }];
 
     const wrapper = mountInventoryList({
       storeOverrides: { materials, loading: false, error: null },
@@ -83,9 +81,7 @@ describe('InventoryList.vue', () => {
   });
 
   it('should show available badge for materials with stock >= 10', () => {
-    const materials = [
-      { code: 'LABEL', name: 'Etiqueta', stock: 500 },
-    ];
+    const materials = [{ code: 'LABEL', name: 'Etiqueta', stock: 500 }];
 
     const wrapper = mountInventoryList({
       storeOverrides: { materials, loading: false, error: null },

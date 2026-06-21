@@ -1,5 +1,11 @@
 <template>
-  <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+  <s-box
+    padding="base"
+    background="base"
+    border-width="base"
+    border-color="base"
+    border-radius="base"
+  >
     <s-heading>Inventario de Materiales</s-heading>
 
     <div v-if="store.loading" class="loading-state">
@@ -9,9 +15,9 @@
     <div v-else-if="store.error">
       <s-banner tone="critical">
         <p>{{ store.error }}</p>
-        <s-button slot="secondary-actions" variant="secondary" @click="store.fetchInventory()">
-          Reintentar
-        </s-button>
+        <template #secondary-actions>
+          <s-button variant="secondary" @click="store.fetchInventory()"> Reintentar </s-button>
+        </template>
       </s-banner>
     </div>
 
@@ -25,11 +31,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="mat in store.materials"
-          :key="mat.code"
-          :class="{ 'low-stock': mat.stock < 10 }"
-        >
+        <tr v-for="mat in store.materials" :key="mat.code" :class="{ 'low-stock': mat.stock < 10 }">
           <td>{{ mat.code }}</td>
           <td>{{ mat.name }}</td>
           <td>{{ mat.stock }}</td>
@@ -65,7 +67,8 @@ onMounted(() => {
   border-collapse: collapse;
   margin-top: 0.75rem;
 }
-.inventory-table th, .inventory-table td {
+.inventory-table th,
+.inventory-table td {
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #e1e3e5;

@@ -1,20 +1,20 @@
 <template>
-  <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
-    <div style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center;">
+  <s-box
+    padding="base"
+    background="base"
+    border-width="base"
+    border-color="base"
+    border-radius="base"
+  >
+    <div style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center">
       <s-text-field
+        v-model="searchQuery"
         label="Buscar"
         label-accessibility-visibility="exclusive"
         placeholder="Buscar..."
         icon="search"
-        :value="searchQuery"
-        @change="searchQuery = ($event.target as any).value"
       />
-      <s-select
-        label="Estado"
-        label-accessibility-visibility="exclusive"
-        :value="selectedStatus"
-        @change="onStatusChange"
-      >
+      <s-select v-model="selectedStatus" label="Estado" label-accessibility-visibility="exclusive">
         <s-option value="">Todos</s-option>
         <s-option value="PENDING">Pendientes</s-option>
         <s-option value="PROCESSING">Procesando</s-option>
@@ -31,9 +31,9 @@
     <div v-else-if="store.error" class="error-state">
       <s-banner tone="critical">
         <p>{{ store.error }}</p>
-        <s-button slot="secondary-actions" variant="secondary" @click="store.fetchOrders()">
-          Reintentar
-        </s-button>
+        <template #secondary-actions>
+          <s-button variant="secondary" @click="store.fetchOrders()"> Reintentar </s-button>
+        </template>
       </s-banner>
     </div>
 
@@ -71,9 +71,7 @@
     </table>
 
     <div v-if="store.totalPages > 1" class="pagination">
-      <s-button :disabled="store.page <= 1" @click="goToPage(store.page - 1)">
-        Anterior
-      </s-button>
+      <s-button :disabled="store.page <= 1" @click="goToPage(store.page - 1)"> Anterior </s-button>
       <span>Página {{ store.page }} de {{ store.totalPages }}</span>
       <s-button :disabled="store.page >= store.totalPages" @click="goToPage(store.page + 1)">
         Siguiente
@@ -83,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useOrderStore } from './store';
 import StatusBadge from './StatusBadge.vue';
@@ -98,11 +96,12 @@ onMounted(() => {
   store.fetchOrders({ limit: props.limit || 20 });
 });
 
-function onStatusChange(event: Event) {
-  const value = (event.target as any).value;
-  selectedStatus.value = value;
-  store.setFilter(value || null);
-}
+watch([searchQuery, selectedStatus], () => {
+  store.setFilter({
+    status: selectedStatus.value === 'Todo' ? null : selectedStatus.value,
+    search: searchQuery.value,
+  });
+});
 
 function goToPage(page: number) {
   store.fetchOrders({ page });
@@ -114,7 +113,9 @@ function viewOrder(id: string) {
 </script>
 
 <style scoped>
-.loading-state, .error-state, .empty-state {
+.loading-state,
+.error-state,
+.empty-state {
   padding: 2rem;
   text-align: center;
 }
@@ -122,7 +123,8 @@ function viewOrder(id: string) {
   width: 100%;
   border-collapse: collapse;
 }
-.order-table th, .order-table td {
+.order-table th,
+.order-table td {
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #e1e3e5;

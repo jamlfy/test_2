@@ -11,6 +11,8 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+const TIME_DEBOUNCE = 1500;
+
 export const useOrderStore = defineStore('order', {
   state: () => ({
     orders: [] as any[],
@@ -20,12 +22,19 @@ export const useOrderStore = defineStore('order', {
     limit: 20,
     totalPages: 0,
     filterStatus: null as string | null,
+    filterSearch: null as string | null,
     loading: false,
     error: null as string | null,
+    debounceTimeout: null as number | null,
   }),
 
   actions: {
-    async fetchOrders(params?: { status?: string; page?: number; limit?: number }) {
+    async fetchOrders(params?: {
+      search?: string;
+      status?: string;
+      page?: number;
+      limit?: number;
+    }) {
       this.loading = true;
       this.error = null;
 
@@ -36,6 +45,10 @@ export const useOrderStore = defineStore('order', {
         };
         if (params?.status || this.filterStatus) {
           query.status = params?.status || this.filterStatus;
+        }
+
+        if (params?.search || this.filterSearch) {
+          query.search = params?.search || this.filterSearch;
         }
 
         const response = await api.get('/orders', { params: query });
@@ -65,10 +78,17 @@ export const useOrderStore = defineStore('order', {
       }
     },
 
-    setFilter(status: string | null) {
+    setFilter({ status, search }: { status: string | null; search: string | null }) {
+      this.loading = true;
       this.filterStatus = status;
+      this.filterSearch = search;
       this.page = 1;
-      this.fetchOrders();
+
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.fetchOrders();
+      }, TIME_DEBOUNCE);
     },
   },
 });

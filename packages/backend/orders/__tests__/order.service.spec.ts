@@ -54,9 +54,11 @@ describe('OrderService', () => {
         { materialCode: 'BOX_SMALL', materialName: 'Caja pequeña', quantity: 1 },
         { materialCode: 'LABEL', materialName: 'Etiqueta', quantity: 1 },
       ]),
-      getEvents: jest.fn().mockResolvedValue([
-        { id: 'evt-1', type: 'RECEIVED', payload: null, createdAt: new Date() },
-      ]),
+      getEvents: jest
+        .fn()
+        .mockResolvedValue([
+          { id: 'evt-1', type: 'RECEIVED', payload: null, createdAt: new Date() },
+        ]),
       getSummary: jest.fn().mockResolvedValue({
         totalOrders: 10,
         completedOrders: 7,
@@ -117,9 +119,11 @@ describe('OrderService', () => {
       const result = await service.processWebhook(webhookPayload, 'test-store');
 
       expect(repo.create).toHaveBeenCalledWith(
-        12345, 'test-store',
+        12345,
+        'test-store',
         [{ productId: '100', sku: 'SKU001', name: 'Widget', quantity: 2, isFragile: false }],
-        'John Doe', 'john@example.com',
+        'John Doe',
+        'john@example.com',
       );
       expect(repo.addEvent).toHaveBeenCalledWith('order-1', 'RECEIVED', {
         shopifyOrderId: 12345,
@@ -146,18 +150,22 @@ describe('OrderService', () => {
     it('should handle fragile items from properties', async () => {
       const fragilePayload: ShopifyWebhookPayload = {
         ...webhookPayload,
-        line_items: [{
-          ...webhookPayload.line_items[0],
-          properties: [{ name: 'fragile', value: 'true' }],
-        }],
+        line_items: [
+          {
+            ...webhookPayload.line_items[0],
+            properties: [{ name: 'fragile', value: 'true' }],
+          },
+        ],
       };
 
       await service.processWebhook(fragilePayload, 'test-store');
 
       expect(repo.create).toHaveBeenCalledWith(
-        12345, 'test-store',
+        12345,
+        'test-store',
         [{ productId: '100', sku: 'SKU001', name: 'Widget', quantity: 2, isFragile: true }],
-        'John Doe', 'john@example.com',
+        'John Doe',
+        'john@example.com',
       );
     });
   });

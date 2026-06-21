@@ -1,34 +1,48 @@
 {
-    "name": "test_2",
-    "private": true,
-    "workspaces": [
-        "apps/*",
-        "packages/share/types",
-        "packages/share/utils",
-        "packages/frontend/*",
-        "packages/backend/*",
-        "packages/prisma",
-        "packages/php"
-    ],
-    "scripts": {
-        "build": "concurrently -p \"[{name}]\" -n \"back,front\" \"npm run build:back\" \"npm run build:front\"",
-        "build:back": "npm run build -w apps/backend",
-        "build:front": "npm run build -w apps/frontend",
-        "demo:requests": "tsx scripts/demoRequest.ts",
-        "dev": "concurrently -p \"[{name}]\" -n \"back,front\" \"npm run dev:back\" \"npm run dev:front\"",
-        "dev:back": "npm run dev -w apps/backend",
-        "dev:front": "npm run dev -w apps/frontend",
-        "prisma:generate": "npx -w packages/prisma prisma generate",
-        "prisma:migrate": "npx -w packages/prisma prisma migrate dev",
-        "seed": "npx -w packages/prisma prisma db seed",
-        "test": "concurrently -p \"[{name}]\" -n \"back,front\" \"npm run test:back\" \"npm run test:front\"",
-        "test:back": "npm run test -w apps/backend",
-        "test:front": "npm run test -w apps/frontend"
-    },
-    "devDependencies": {
-        "@faker-js/faker": "^9.9.0",
-        "concurrently": "^8.2.2",
-        "tsx": "^4.22.4",
-        "typescript": "^5.3.3"
-    }
+  "name": "test_2",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/share/types",
+    "packages/share/utils",
+    "packages/frontend/*",
+    "packages/backend/*",
+    "packages/prisma",
+    "packages/php"
+  ],
+  "scripts": {
+    "build": "concurrently -p \"[{name}]\" -n \"back,front\" \"npm run build:back\" \"npm run build:front\"",
+    "build:back": "dotenv -- npm run build -w apps/backend",
+    "build:front": "dotenv -- npm run build -w apps/frontend",
+    "demo:requests": "tsx scripts/demoRequest.ts",
+    "dev": "concurrently -p \"[{name}]\" -n \"back,front\" \"npm run dev:back\" \"npm run dev:front\"",
+    "dev:back": "dotenv -- npm run dev -w apps/backend",
+    "dev:front": "dotenv -- npm run dev -w apps/frontend",
+    "prisma:generate": "npx -w packages/prisma prisma generate",
+    "prisma:migrate": "npx -w packages/prisma prisma migrate dev",
+    "seed": "npx -w packages/prisma prisma db seed",
+    "test": "concurrently -p \"[{name}]\" -n \"back,front\" \"npm run test:back\" \"npm run test:front\"",
+    "test:back": "npm run test -w apps/backend",
+    "test:front": "npm run test -w apps/frontend",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@faker-js/faker": "^9.9.0",
+    "concurrently": "^8.2.2",
+    "dotenv": "^17.4.2",
+    "dotenv-cli": "^11.0.0",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.9.2",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.4",
+    "tsx": "^4.22.4",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.61.1",
+    "vue-eslint-parser": "^10.4.1"
+  }
 }

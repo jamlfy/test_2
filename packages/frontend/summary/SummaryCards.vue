@@ -6,44 +6,80 @@
   <div v-else-if="store.error && !store.totalOrders">
     <s-banner tone="critical">
       <p>{{ store.error }}</p>
-      <s-button slot="secondary-actions" variant="secondary" @click="store.fetchSummary()">
-        Reintentar
-      </s-button>
+      <template #secondary-actions>
+        <s-button variant="secondary" @click="store.fetchSummary()"> Reintentar </s-button>
+      </template>
     </s-banner>
   </div>
 
   <div v-else class="summary-grid">
-    <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
         <s-heading>{{ store.totalOrders }}</s-heading>
         <s-text color="subdued">Total Órdenes</s-text>
       </div>
     </s-box>
-    <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
         <s-heading>{{ store.completedOrders }}</s-heading>
         <s-text color="subdued">Completadas</s-text>
       </div>
     </s-box>
-    <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
         <s-heading>{{ store.failedOrders }}</s-heading>
         <s-text color="subdued">Fallidas</s-text>
       </div>
     </s-box>
-    <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
         <s-heading>{{ store.pendingOrders }}</s-heading>
         <s-text color="subdued">Pendientes</s-text>
       </div>
     </s-box>
-    <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
         <s-heading>{{ store.processingOrders }}</s-heading>
         <s-text color="subdued">Procesando</s-text>
       </div>
     </s-box>
-    <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
         <s-heading>{{ store.lowStockMaterials }}</s-heading>
         <s-text color="subdued">Materiales Críticos</s-text>

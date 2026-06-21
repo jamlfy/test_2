@@ -7,15 +7,21 @@
     <div v-else-if="store.error">
       <s-banner tone="critical">
         <p>{{ store.error }}</p>
-        <s-button slot="secondary-actions" variant="secondary" @click="store.fetchOrder(orderId)">
-          Reintentar
-        </s-button>
+        <template #secondary-actions>
+          <s-button variant="secondary" @click="store.fetchOrder(orderId)"> Reintentar </s-button>
+        </template>
       </s-banner>
     </div>
 
     <template v-else-if="store.currentOrder">
       <s-section>
-        <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+        <s-box
+          padding="base"
+          background="base"
+          border-width="base"
+          border-color="base"
+          border-radius="base"
+        >
           <s-heading>Información de la Orden</s-heading>
           <div class="info-grid">
             <s-text type="strong">ID Shopify:</s-text>
@@ -39,7 +45,13 @@
       </s-section>
 
       <s-section>
-        <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+        <s-box
+          padding="base"
+          background="base"
+          border-width="base"
+          border-color="base"
+          border-radius="base"
+        >
           <s-heading>Productos</s-heading>
           <table class="detail-table">
             <thead>
@@ -63,7 +75,13 @@
       </s-section>
 
       <s-section>
-        <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+        <s-box
+          padding="base"
+          background="base"
+          border-width="base"
+          border-color="base"
+          border-radius="base"
+        >
           <s-heading>Materiales Utilizados</s-heading>
           <table v-if="store.currentOrder.materials?.length" class="detail-table">
             <thead>
@@ -86,7 +104,13 @@
       </s-section>
 
       <s-section>
-        <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+        <s-box
+          padding="base"
+          background="base"
+          border-width="base"
+          border-color="base"
+          border-radius="base"
+        >
           <s-heading>Línea de Tiempo</s-heading>
           <div class="timeline">
             <div v-for="event in store.currentOrder.events" :key="event.id" class="timeline-item">
@@ -134,7 +158,8 @@ onMounted(() => {
   border-collapse: collapse;
   margin-top: 0.75rem;
 }
-.detail-table th, .detail-table td {
+.detail-table th,
+.detail-table td {
   padding: 0.5rem;
   text-align: left;
   border-bottom: 1px solid #e1e3e5;
@@ -159,8 +184,16 @@ onMounted(() => {
   background: #8c9196;
   top: 0.75rem;
 }
-.timeline-dot.completed { background: #3ea754; }
-.timeline-dot.failed { background: #d82c0d; }
-.timeline-dot.processing { background: #ffc107; }
-.timeline-dot.received { background: #5c6ac4; }
+.timeline-dot.completed {
+  background: #3ea754;
+}
+.timeline-dot.failed {
+  background: #d82c0d;
+}
+.timeline-dot.processing {
+  background: #ffc107;
+}
+.timeline-dot.received {
+  background: #5c6ac4;
+}
 </style>

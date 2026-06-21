@@ -1,6 +1,8 @@
 <template>
   <s-page :heading="`Orden #${orderId}`">
-    <s-link slot="breadcrumb-actions" href="/orders">Órdenes</s-link>
+    <template #breadcrumb-actions>
+      <s-link href="/orders">Órdenes</s-link>
+    </template>
     <OrderDetail :order-id="orderId" />
   </s-page>
 </template>
