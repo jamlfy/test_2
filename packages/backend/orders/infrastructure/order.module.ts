@@ -15,7 +15,11 @@ import { QUEUE_NAMES } from '@test_2/share-utils';
     InventoryModule,
     PackagingModule,
     BullModule.registerQueue({
-      name: QUEUE_NAMES.ORDERS,
+        name: QUEUE_NAMES.ORDERS,
+        connection: {
+          host: process.env.REDIS_HOST || 'localhost',
+          port: parseInt(process.env.REDIS_PORT || '6379', 10),
+        },
     }),
   ],
   controllers: [OrderController],
