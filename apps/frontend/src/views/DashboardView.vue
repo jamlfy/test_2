@@ -12,5 +12,4 @@
 <script setup lang="ts">
 import { SummaryCards } from '@test_2/frontend-summary';
 import { InventoryList } from '@test_2/frontend-inventory';
-import { OrderList } from '@test_2/frontend-order';
 </script>

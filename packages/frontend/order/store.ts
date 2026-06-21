@@ -25,7 +25,7 @@ export const useOrderStore = defineStore('order', {
     filterSearch: null as string | null,
     loading: false,
     error: null as string | null,
-    debounceTimeout: null as number | null,
+    debounceTimeout: null as ReturnType<typeof setTimeout> | null,
   }),
 
   actions: {
@@ -64,7 +64,7 @@ export const useOrderStore = defineStore('order', {
       }
     },
 
-    async fetchOrder(id: string) {
+    async fetchOrder(id: string | number) {
       this.loading = true;
       this.error = null;
 

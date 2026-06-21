@@ -1,8 +1,7 @@
 <template>
-  <s-page :heading="`Orden #${orderId}`">
-    <template #breadcrumb-actions>
-      <s-link href="/orders">Órdenes</s-link>
-    </template>
+  <s-page :heading="heading">
+    <s-link href="/orders">Órdenes</s-link>
+
     <OrderDetail :order-id="orderId" />
   </s-page>
 </template>
@@ -14,4 +13,5 @@ import { OrderDetail } from '@test_2/frontend-order';
 
 const route = useRoute();
 const orderId = computed(() => route.params.id as string);
+const heading = computed(() => `Orden #${orderId.value}`);
 </script>

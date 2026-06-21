@@ -31,9 +31,7 @@
     <div v-else-if="store.error" class="error-state">
       <s-banner tone="critical">
         <p>{{ store.error }}</p>
-        <template #secondary-actions>
-          <s-button variant="secondary" @click="store.fetchOrders()"> Reintentar </s-button>
-        </template>
+        <s-button variant="secondary" @click="store.fetchOrders()"> Reintentar </s-button>
       </s-banner>
     </div>
 

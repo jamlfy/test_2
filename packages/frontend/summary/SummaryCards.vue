@@ -6,9 +6,7 @@
   <div v-else-if="store.error && !store.totalOrders">
     <s-banner tone="critical">
       <p>{{ store.error }}</p>
-      <template #secondary-actions>
-        <s-button variant="secondary" @click="store.fetchSummary()"> Reintentar </s-button>
-      </template>
+      <s-button variant="secondary" @click="store.fetchSummary()"> Reintentar </s-button>
     </s-banner>
   </div>
 

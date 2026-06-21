@@ -7,9 +7,7 @@
     <div v-else-if="store.error">
       <s-banner tone="critical">
         <p>{{ store.error }}</p>
-        <template #secondary-actions>
-          <s-button variant="secondary" @click="store.fetchOrder(orderId)"> Reintentar </s-button>
-        </template>
+        <s-button variant="secondary" @click="store.fetchOrder(orderId)"> Reintentar </s-button>
       </s-banner>
     </div>
 
@@ -134,7 +132,7 @@ import { onMounted } from 'vue';
 import { useOrderStore } from './store';
 import StatusBadge from './StatusBadge.vue';
 
-const props = defineProps<{ orderId: string }>();
+const props = defineProps<{ orderId: string | number }>();
 const store = useOrderStore();
 
 onMounted(() => {
