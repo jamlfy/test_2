@@ -25,6 +25,13 @@
       "@test_2/share-types/*": ["packages/share/types/*"],
       "@test_2/share-utils": ["packages/share/utils"],
       "@test_2/share-utils/*": ["packages/share/utils/*"]
-    },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "../../packages/frontend/**/*.ts", "../../packages/share/**/*.ts"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "../../packages/frontend/**/*.ts",
+    "../../packages/share/**/*.ts"
+  ]
 }

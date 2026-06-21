@@ -1,16 +1,13 @@
 <template>
-  <Page
-    :title="`Orden #${orderId}`"
-    breadcrumbs={[{ content: 'Órdenes', url: '/orders' }]}
-  >
+  <s-page :heading="`Orden #${orderId}`">
+    <s-link slot="breadcrumb-actions" href="/orders">Órdenes</s-link>
     <OrderDetail :order-id="orderId" />
-  </Page>
+  </s-page>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { Page } from '@shopify/polaris';
 import { OrderDetail } from '@test_2/frontend-order';
 
 const route = useRoute();

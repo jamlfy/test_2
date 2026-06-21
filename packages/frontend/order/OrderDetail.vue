@@ -1,115 +1,112 @@
 <template>
-  <Layout>
+  <s-stack direction="block" gap="base">
     <div v-if="store.loading" class="loading-state">
-      <Spinner size="large" />
+      <s-spinner accessibility-label="Cargando orden" size="large" />
     </div>
 
     <div v-else-if="store.error">
-      <Banner status="critical">
+      <s-banner tone="critical">
         <p>{{ store.error }}</p>
-        <Button @click="store.fetchOrder(orderId)">Reintentar</Button>
-      </Banner>
+        <s-button slot="secondary-actions" variant="secondary" @click="store.fetchOrder(orderId)">
+          Reintentar
+        </s-button>
+      </s-banner>
     </div>
 
     <template v-else-if="store.currentOrder">
-      <Layout.Section>
-        <Card>
-          <div style="padding: 1rem;">
-            <Text variant="headingMd" as="h3">Información de la Orden</Text>
-            <div class="info-grid">
-              <div><strong>ID Shopify:</strong> {{ store.currentOrder.shopifyOrderId }}</div>
-              <div><strong>Cliente:</strong> {{ store.currentOrder.customerName || '—' }}</div>
-              <div><strong>Email:</strong> {{ store.currentOrder.customerEmail || '—' }}</div>
-              <div><strong>Total productos:</strong> {{ store.currentOrder.totalProducts }}</div>
-              <div><strong>Contiene frágiles:</strong> {{ store.currentOrder.hasFragile ? 'Sí' : 'No' }}</div>
-              <div>
-                <strong>Estado:</strong>
-                <StatusBadge :status="store.currentOrder.status" />
-              </div>
-              <div v-if="store.currentOrder.errorMessage">
-                <strong>Error:</strong> {{ store.currentOrder.errorMessage }}
-              </div>
-            </div>
+      <s-section>
+        <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+          <s-heading>Información de la Orden</s-heading>
+          <div class="info-grid">
+            <s-text type="strong">ID Shopify:</s-text>
+            <s-text>{{ store.currentOrder.shopifyOrderId }}</s-text>
+            <s-text type="strong">Cliente:</s-text>
+            <s-text>{{ store.currentOrder.customerName || '—' }}</s-text>
+            <s-text type="strong">Email:</s-text>
+            <s-text>{{ store.currentOrder.customerEmail || '—' }}</s-text>
+            <s-text type="strong">Total productos:</s-text>
+            <s-text>{{ store.currentOrder.totalProducts }}</s-text>
+            <s-text type="strong">Contiene frágiles:</s-text>
+            <s-text>{{ store.currentOrder.hasFragile ? 'Sí' : 'No' }}</s-text>
+            <s-text type="strong">Estado:</s-text>
+            <s-text><StatusBadge :status="store.currentOrder.status" /></s-text>
+            <template v-if="store.currentOrder.errorMessage">
+              <s-text type="strong">Error:</s-text>
+              <s-text>{{ store.currentOrder.errorMessage }}</s-text>
+            </template>
           </div>
-        </Card>
-      </Layout.Section>
+        </s-box>
+      </s-section>
 
-      <Layout.Section>
-        <Card>
-          <div style="padding: 1rem;">
-            <Text variant="headingMd" as="h3">Productos</Text>
-            <table class="detail-table">
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>SKU</th>
-                  <th>Cantidad</th>
-                  <th>Frágil</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in store.currentOrder.items" :key="item.productId">
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.sku }}</td>
-                  <td>{{ item.quantity }}</td>
-                  <td>{{ item.isFragile ? 'Sí' : 'No' }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      </Layout.Section>
+      <s-section>
+        <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+          <s-heading>Productos</s-heading>
+          <table class="detail-table">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>SKU</th>
+                <th>Cantidad</th>
+                <th>Frágil</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in store.currentOrder.items" :key="item.productId">
+                <td>{{ item.name }}</td>
+                <td>{{ item.sku }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.isFragile ? 'Sí' : 'No' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </s-box>
+      </s-section>
 
-      <Layout.Section>
-        <Card>
-          <div style="padding: 1rem;">
-            <Text variant="headingMd" as="h3">Materiales Utilizados</Text>
-            <table class="detail-table" v-if="store.currentOrder.materials?.length">
-              <thead>
-                <tr>
-                  <th>Material</th>
-                  <th>Código</th>
-                  <th>Cantidad</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="mat in store.currentOrder.materials" :key="mat.materialCode">
-                  <td>{{ mat.materialName }}</td>
-                  <td>{{ mat.materialCode }}</td>
-                  <td>{{ mat.quantity }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <p v-else>No se registraron materiales para esta orden.</p>
-          </div>
-        </Card>
-      </Layout.Section>
+      <s-section>
+        <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+          <s-heading>Materiales Utilizados</s-heading>
+          <table v-if="store.currentOrder.materials?.length" class="detail-table">
+            <thead>
+              <tr>
+                <th>Material</th>
+                <th>Código</th>
+                <th>Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="mat in store.currentOrder.materials" :key="mat.materialCode">
+                <td>{{ mat.materialName }}</td>
+                <td>{{ mat.materialCode }}</td>
+                <td>{{ mat.quantity }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p v-else>No se registraron materiales para esta orden.</p>
+        </s-box>
+      </s-section>
 
-      <Layout.Section>
-        <Card>
-          <div style="padding: 1rem;">
-            <Text variant="headingMd" as="h3">Línea de Tiempo</Text>
-            <div class="timeline">
-              <div v-for="event in store.currentOrder.events" :key="event.id" class="timeline-item">
-                <div class="timeline-dot" :class="event.type.toLowerCase()"></div>
-                <div class="timeline-content">
-                  <Text variant="bodyMd" as="p" fontWeight="bold">{{ event.type }}</Text>
-                  <Text variant="bodySm" as="p" color="subdued">
-                    {{ new Date(event.createdAt).toLocaleString() }}
-                  </Text>
-                </div>
+      <s-section>
+        <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+          <s-heading>Línea de Tiempo</s-heading>
+          <div class="timeline">
+            <div v-for="event in store.currentOrder.events" :key="event.id" class="timeline-item">
+              <div class="timeline-dot" :class="event.type.toLowerCase()"></div>
+              <div class="timeline-content">
+                <s-text type="strong">{{ event.type }}</s-text>
+                <s-text color="subdued">
+                  {{ new Date(event.createdAt).toLocaleString() }}
+                </s-text>
               </div>
             </div>
           </div>
-        </Card>
-      </Layout.Section>
+        </s-box>
+      </s-section>
     </template>
-  </Layout>
+  </s-stack>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { Layout, Card, Spinner, Banner, Button, Text } from '@shopify/polaris';
 import { useOrderStore } from './store';
 import StatusBadge from './StatusBadge.vue';
 
@@ -128,7 +125,7 @@ onMounted(() => {
 }
 .info-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto 1fr;
   gap: 0.75rem;
   margin-top: 1rem;
 }

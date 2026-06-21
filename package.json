@@ -11,17 +11,19 @@
         "packages/php"
     ],
     "scripts": {
-        "dev:backend": "npm run dev -w apps/backend",
-        "dev:frontend": "npm run dev -w apps/frontend",
-        "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-        "build": "npm run build -w apps/backend && npm run build -w apps/frontend",
-        "test": "npm run test -w apps/backend && npm run test -w apps/frontend",
-        "test:front": "npm run test -w apps/frontend",
-        "test:back": "npm run test -w apps/backend",
+        "build": "concurrently -p \"[{name}]\" -n \"back,front\" \"npm run build:back\" \"npm run build:front\"",
+        "build:back": "npm run build -w apps/backend",
+        "build:front": "npm run build -w apps/frontend",
+        "demo:requests": "tsx scripts/demoRequest.ts",
+        "dev": "concurrently -p \"[{name}]\" -n \"back,front\" \"npm run dev:back\" \"npm run dev:front\"",
+        "dev:back": "npm run dev -w apps/backend",
+        "dev:front": "npm run dev -w apps/frontend",
         "prisma:generate": "npx -w packages/prisma prisma generate",
         "prisma:migrate": "npx -w packages/prisma prisma migrate dev",
         "seed": "npx -w packages/prisma prisma db seed",
-        "demo:requests": "tsx scripts/demoRequest.ts"
+        "test": "concurrently -p \"[{name}]\" -n \"back,front\" \"npm run test:back\" \"npm run test:front\"",
+        "test:back": "npm run test -w apps/backend",
+        "test:front": "npm run test -w apps/frontend"
     },
     "devDependencies": {
         "@faker-js/faker": "^9.9.0",

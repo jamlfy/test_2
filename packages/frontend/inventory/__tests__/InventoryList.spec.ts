@@ -3,25 +3,6 @@ import { mount } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
 import InventoryList from '../InventoryList.vue';
 
-jest.mock('@shopify/polaris', () => {
-  const { h } = require('vue');
-  const slotRenderer = (name) => ({
-    name,
-    render() {
-      const slot = this.$slots.default;
-      return h('div', { class: `mock-${name}` }, slot ? slot() : []);
-    },
-  });
-  return {
-    Card: slotRenderer('Card'),
-    Spinner: slotRenderer('Spinner'),
-    Banner: slotRenderer('Banner'),
-    Button: slotRenderer('Button'),
-    Badge: slotRenderer('Badge'),
-    Text: slotRenderer('Text'),
-  };
-});
-
 function mountInventoryList(options?: { storeOverrides?: Record<string, any> }) {
   const pinia = createTestingPinia({
     initialState: {
@@ -38,6 +19,11 @@ function mountInventoryList(options?: { storeOverrides?: Record<string, any> }) 
   return mount(InventoryList, {
     global: {
       plugins: [pinia],
+      config: {
+        compilerOptions: {
+          isCustomElement: (tag: string) => tag.startsWith('s-'),
+        },
+      },
     },
   });
 }
@@ -52,7 +38,8 @@ describe('InventoryList.vue', () => {
       storeOverrides: { loading: true, materials: [] },
     });
 
-    expect(wrapper.find('.mock-Spinner').exists()).toBe(true);
+    expect(wrapper.find('s-spinner').exists()).toBe(true);
+    expect(wrapper.find('s-spinner').attributes('accessibility-label')).toBe('Cargando inventario');
   });
 
   it('should show error state', () => {

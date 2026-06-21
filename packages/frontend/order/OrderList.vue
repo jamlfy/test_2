@@ -1,90 +1,90 @@
 <template>
-  <Card>
-    <div style="padding: 1rem;">
-      <div style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center;">
-        <TextField
-          label=""
-          placeholder="Buscar..."
-          prefix="search"
-          :value="searchQuery"
-          @change="searchQuery = $event"
-        />
-        <Select
-          label="Estado"
-          :options="statusOptions"
-          :value="selectedStatus"
-          @change="onStatusChange"
-        />
-      </div>
-
-      <div v-if="store.loading" class="loading-state">
-        <Spinner size="large" />
-        <p>Cargando órdenes...</p>
-      </div>
-
-      <div v-else-if="store.error" class="error-state">
-        <Banner status="critical">
-          <p>{{ store.error }}</p>
-          <Button @click="store.fetchOrders()">Reintentar</Button>
-        </Banner>
-      </div>
-
-      <div v-else-if="store.orders.length === 0" class="empty-state">
-        <EmptyState heading="No hay órdenes" :action="{ content: 'Recargar', onAction: () => store.fetchOrders() }">
-          <p>No se encontraron órdenes con los filtros actuales.</p>
-        </EmptyState>
-      </div>
-
-      <table v-else class="order-table">
-        <thead>
-          <tr>
-            <th>ID Shopify</th>
-            <th>Cliente</th>
-            <th>Productos</th>
-            <th>Frágil</th>
-            <th>Estado</th>
-            <th>Creada</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="order in store.orders" :key="order.id">
-            <td>{{ order.shopifyOrderId }}</td>
-            <td>{{ order.customerName || '—' }}</td>
-            <td>{{ order.totalProducts }}</td>
-            <td>{{ order.hasFragile ? 'Sí' : 'No' }}</td>
-            <td><StatusBadge :status="order.status" /></td>
-            <td>{{ new Date(order.createdAt).toLocaleDateString() }}</td>
-            <td>
-              <Button variant="plain" @click="viewOrder(order.id)">Ver</Button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div v-if="store.totalPages > 1" class="pagination">
-        <Button
-          :disabled="store.page <= 1"
-          @click="goToPage(store.page - 1)"
-        >
-          Anterior
-        </Button>
-        <span>Página {{ store.page }} de {{ store.totalPages }}</span>
-        <Button
-          :disabled="store.page >= store.totalPages"
-          @click="goToPage(store.page + 1)"
-        >
-          Siguiente
-        </Button>
-      </div>
+  <s-box padding="base" background="base" border-width="base" border-color="base" border-radius="base">
+    <div style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center;">
+      <s-text-field
+        label="Buscar"
+        label-accessibility-visibility="exclusive"
+        placeholder="Buscar..."
+        icon="search"
+        :value="searchQuery"
+        @change="searchQuery = ($event.target as any).value"
+      />
+      <s-select
+        label="Estado"
+        label-accessibility-visibility="exclusive"
+        :value="selectedStatus"
+        @change="onStatusChange"
+      >
+        <s-option value="">Todos</s-option>
+        <s-option value="PENDING">Pendientes</s-option>
+        <s-option value="PROCESSING">Procesando</s-option>
+        <s-option value="COMPLETED">Completadas</s-option>
+        <s-option value="FAILED">Fallidas</s-option>
+      </s-select>
     </div>
-  </Card>
+
+    <div v-if="store.loading" class="loading-state">
+      <s-spinner accessibility-label="Cargando órdenes" size="large" />
+      <p>Cargando órdenes...</p>
+    </div>
+
+    <div v-else-if="store.error" class="error-state">
+      <s-banner tone="critical">
+        <p>{{ store.error }}</p>
+        <s-button slot="secondary-actions" variant="secondary" @click="store.fetchOrders()">
+          Reintentar
+        </s-button>
+      </s-banner>
+    </div>
+
+    <div v-else-if="store.orders.length === 0" class="empty-state">
+      <s-heading>No hay órdenes</s-heading>
+      <s-text>No se encontraron órdenes con los filtros actuales.</s-text>
+      <s-button variant="secondary" @click="store.fetchOrders()">Recargar</s-button>
+    </div>
+
+    <table v-else class="order-table">
+      <thead>
+        <tr>
+          <th>ID Shopify</th>
+          <th>Cliente</th>
+          <th>Productos</th>
+          <th>Frágil</th>
+          <th>Estado</th>
+          <th>Creada</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="order in store.orders" :key="order.id">
+          <td>{{ order.shopifyOrderId }}</td>
+          <td>{{ order.customerName || '—' }}</td>
+          <td>{{ order.totalProducts }}</td>
+          <td>{{ order.hasFragile ? 'Sí' : 'No' }}</td>
+          <td><StatusBadge :status="order.status" /></td>
+          <td>{{ new Date(order.createdAt).toLocaleDateString() }}</td>
+          <td>
+            <s-button variant="tertiary" @click="viewOrder(order.id)">Ver</s-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div v-if="store.totalPages > 1" class="pagination">
+      <s-button :disabled="store.page <= 1" @click="goToPage(store.page - 1)">
+        Anterior
+      </s-button>
+      <span>Página {{ store.page }} de {{ store.totalPages }}</span>
+      <s-button :disabled="store.page >= store.totalPages" @click="goToPage(store.page + 1)">
+        Siguiente
+      </s-button>
+    </div>
+  </s-box>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { Card, TextField, Select, Spinner, Banner, Button, EmptyState } from '@shopify/polaris';
 import { useOrderStore } from './store';
 import StatusBadge from './StatusBadge.vue';
 
@@ -94,19 +94,12 @@ const store = useOrderStore();
 const searchQuery = ref('');
 const selectedStatus = ref('');
 
-const statusOptions = [
-  { label: 'Todos', value: '' },
-  { label: 'Pendientes', value: 'PENDING' },
-  { label: 'Procesando', value: 'PROCESSING' },
-  { label: 'Completadas', value: 'COMPLETED' },
-  { label: 'Fallidas', value: 'FAILED' },
-];
-
 onMounted(() => {
   store.fetchOrders({ limit: props.limit || 20 });
 });
 
-function onStatusChange(value: string) {
+function onStatusChange(event: Event) {
+  const value = (event.target as any).value;
   selectedStatus.value = value;
   store.setFilter(value || null);
 }
