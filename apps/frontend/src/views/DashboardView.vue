@@ -6,9 +6,6 @@
     <s-section>
       <InventoryList />
     </s-section>
-    <s-section>
-      <OrderList :limit="10" />
-    </s-section>
   </s-page>
 </template>
 
