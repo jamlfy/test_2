@@ -18,7 +18,14 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+
+  SwaggerModule.setup('api/docs', app, document, {
+    customCssUrl: 'https://unpkg.com/swagger-ui-dist@5/swagger-ui.css',
+    customJs: [
+      'https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js',
+      'https://unpkg.com/swagger-ui-dist@5/swagger-ui-standalone-preset.js',
+    ],
+  });
 
   await app.listen(3000);
   console.log('Backend running on http://localhost:3000');
