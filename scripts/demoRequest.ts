@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import * as crypto from 'crypto';
 
 const API_URL = 'http://localhost:3000/api/webhooks/order';
 const TOTAL_REQUESTS = 1000;
@@ -44,8 +45,15 @@ function generateOrder() {
   };
 }
 
+function generateCrypto(rawBody: string) {
+  return crypto
+    .createHmac('sha256', process.env.SHOPIFY_WEBHOOK_SECRET || '')
+    .update(rawBody)
+    .digest('base64');
+}
+
 async function run() {
-  console.log(`Enviando ${TOTAL_REQUESTS} requests a ${API_URL}...\n`);
+  console.log(`Send ${TOTAL_REQUESTS} requests -> ${API_URL}...\n`);
 
   const orders = Array.from({ length: TOTAL_REQUESTS }, generateOrder);
   let success = 0;
@@ -57,11 +65,16 @@ async function run() {
     await Promise.all(
       batch.map(async (order, idx) => {
         const id = i + idx + 1;
+        const body = JSON.stringify(order);
+
         try {
           const res = await fetch(API_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(order),
+            headers: {
+              'Content-Type': 'application/json',
+              'x-shopify-hmac-sha256': generateCrypto(body),
+            },
+            body,
           });
 
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -78,9 +91,9 @@ async function run() {
   }
 
   console.log('\n---');
-  console.log(`Total:     ${TOTAL_REQUESTS}`);
-  console.log(`Exitosas:  ${success}`);
-  console.log(`Fallidas:  ${failed}`);
+  console.log(`Total:  ${TOTAL_REQUESTS}`);
+  console.log(`Success:${success}`);
+  console.log(`Failed: ${failed}`);
 }
 
 run();

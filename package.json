@@ -14,7 +14,7 @@
     "build": "concurrently -p \"[{name}]\" -n \"back,front\" \"npm run build:back\" \"npm run build:front\"",
     "build:back": "dotenv -- npm run build -w apps/backend",
     "build:front": "dotenv -- npm run build -w apps/frontend",
-    "demo:requests": "tsx scripts/demoRequest.ts",
+    "demo:requests": "dotenv -- tsx scripts/demoRequest.ts",
     "dev": "concurrently -p \"[{name}]\" -n \"back,front\" \"npm run dev:back\" \"npm run dev:front\"",
     "dev:back": "dotenv -- npm run dev -w apps/backend",
     "dev:front": "dotenv -- npm run dev -w apps/frontend",
