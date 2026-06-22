@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Query, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, Body, HttpCode, HttpStatus, UseGuards, UseInterceptors } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -6,6 +6,7 @@ import {
   ApiBearerAuth,
   ApiExcludeEndpoint,
 } from '@nestjs/swagger';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { OrderService } from '../application/order.service';
 import {
   OrderDetailResponseDto,
@@ -15,6 +16,7 @@ import {
   LowStockMaterialDto,
 } from './dto/order-response.dto';
 import { ShopifyWebhookDto } from './dto/webhook.dto';
+import { ShopifyWebhookGuard } from './shopify-webhook.guard';
 import { InventoryService } from '@test_2/backend-inventory';
 
 @ApiTags('Orders')
@@ -27,9 +29,9 @@ export class OrderController {
 
   @Post('webhooks/order')
   @HttpCode(HttpStatus.OK)
+  @UseGuards(ShopifyWebhookGuard)
   @ApiExcludeEndpoint()
   async handleWebhook(@Body() body: ShopifyWebhookDto) {
-    console.log('Test');
     const storeName = body.name || 'shopify-store';
     return this.orderService.processWebhook(body as any, storeName);
   }
@@ -63,6 +65,7 @@ export class OrderController {
   }
 
   @Get('inventory')
+  @UseInterceptors(CacheInterceptor)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener inventario actual de materiales' })
   @ApiResponse({ status: 200 })
@@ -71,6 +74,7 @@ export class OrderController {
   }
 
   @Get('dashboard/summary')
+  @UseInterceptors(CacheInterceptor)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener resumen del dashboard' })
   @ApiResponse({ status: 200, type: DashboardSummaryDto })

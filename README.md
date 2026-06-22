@@ -59,8 +59,6 @@ Sistema de gestión de órdenes de Shopify e inventario de material de empaque.
 
 ## Configuración
 
-
-
 1. Copia el archivo de entorno:
    ```bash
    cp .env.example .env

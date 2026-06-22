@@ -5,22 +5,23 @@
         <s-icon type="shopify" />
         <span class="topbar-title">Order Management</span>
       </div>
-      <div class="topbar-right">
-        <template v-if="isAuthenticated">
-          <s-popover id="user-menu-popover">
-            <s-stack direction="block" gap="base" padding="base">
-              <s-text color="subdued">{{ user?.email }}</s-text>
-              <s-button variant="tertiary" @click="logout()">Cerrar sesión</s-button>
-            </s-stack>
-          </s-popover>
-          <s-button command-for="user-menu-popover">
-            {{ user?.name || 'Usuario' }}
-          </s-button>
-        </template>
-        <s-button v-else @click="loginWithRedirect()">Iniciar sesión</s-button>
-      </div>
+      <template v-if="enableAuth">
+        <div class="topbar-right">
+          <template v-if="isAuthenticated">
+            <s-popover id="user-menu-popover">
+              <s-stack direction="block" gap="base" padding="base">
+                <s-text color="subdued">{{ user?.email }}</s-text>
+                <s-button variant="tertiary" @click="logout()">Cerrar sesión</s-button>
+              </s-stack>
+            </s-popover>
+            <s-button command-for="user-menu-popover">
+              {{ user?.name || 'Usuario' }}
+            </s-button>
+          </template>
+          <s-button v-else @click="loginWithRedirect()">Iniciar sesión</s-button>
+        </div>
+      </template>
       <button
-        v-if="isAuthenticated"
         class="mobile-nav-toggle"
         aria-label="Toggle navigation"
         @click="showMobileNav = !showMobileNav"
@@ -29,7 +30,7 @@
       </button>
     </header>
 
-    <div v-if="isAuthenticated" class="app-layout">
+    <div class="app-layout">
       <nav class="sidebar" :class="{ open: showMobileNav }">
         <s-stack direction="block" gap="small-200" padding="base">
           <s-button
@@ -63,8 +64,36 @@ import { useAuth0 } from '@auth0/auth0-vue';
 
 const router = useRouter();
 const route = useRoute();
-const { isAuthenticated, loginWithRedirect, logout, user, isLoading } = useAuth0();
 const showMobileNav = ref(false);
+
+const enableAuth = import.meta.env.VITE_ENABLE_AUTH !== 'false';
+
+let isAuth: import('vue').Ref<boolean>;
+let loginFn: () => void;
+let logoutFn: () => void;
+let userRef: import('vue').Ref<any>;
+let loadingRef: import('vue').Ref<boolean>;
+
+if (enableAuth) {
+  const auth = useAuth0();
+  isAuth = auth.isAuthenticated;
+  loginFn = auth.loginWithRedirect;
+  logoutFn = auth.logout;
+  userRef = auth.user;
+  loadingRef = auth.isLoading;
+} else {
+  isAuth = ref(true);
+  loginFn = () => {};
+  logoutFn = () => {};
+  userRef = ref(null);
+  loadingRef = ref(false);
+}
+
+const isAuthenticated = isAuth;
+const loginWithRedirect = loginFn;
+const logout = logoutFn;
+const user = userRef;
+const isLoading = loadingRef;
 
 const navigationItems = computed(() => [
   { label: 'Dashboard', url: '/', selected: route.path === '/' },

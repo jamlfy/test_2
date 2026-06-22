@@ -11,8 +11,7 @@
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.2.0",
-    "@test_2/frontend-auth": "*",
-    "@test_2/frontend-inventory": "*",
+        "@test_2/frontend-inventory": "*",
     "@test_2/frontend-order": "*",
     "@test_2/frontend-summary": "*",
     "axios": "^1.6.5",
