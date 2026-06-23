@@ -1,5 +1,5 @@
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
-import { Queue, Worker, Job } from 'bullmq';
+import { Queue, Job } from 'bullmq';
 import { QUEUE_NAMES } from '@test_2/share-utils';
 
 @Injectable()
@@ -16,15 +16,19 @@ export class QueueService implements OnModuleDestroy {
   }
 
   async addOrderJob(orderId: string): Promise<Job> {
-    return this.queue.add('process-order', { orderId }, {
-      attempts: 3,
-      backoff: {
-        type: 'exponential',
-        delay: 2000,
+    return this.queue.add(
+      'process-order',
+      { orderId },
+      {
+        attempts: 3,
+        backoff: {
+          type: 'exponential',
+          delay: 2000,
+        },
+        removeOnComplete: true,
+        removeOnFail: false,
       },
-      removeOnComplete: true,
-      removeOnFail: false,
-    });
+    );
   }
 
   async onModuleDestroy() {

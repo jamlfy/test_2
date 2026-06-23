@@ -27,10 +27,7 @@ export class InventoryService {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  async consumeMaterials(
-    orderId: string,
-    materials: CalculatedMaterial[],
-  ): Promise<void> {
+  async consumeMaterials(orderId: string, materials: CalculatedMaterial[]): Promise<void> {
     const result = await this.repo.consumeMaterials(orderId, materials);
 
     if (!result.success) {
@@ -46,10 +43,7 @@ export class InventoryService {
       throw new InventoryError(result.failedReason || 'Stock insuficiente');
     }
 
-    this.eventEmitter.emit(
-      'inventory.consumed',
-      new InventoryConsumedEvent(orderId, materials),
-    );
+    this.eventEmitter.emit('inventory.consumed', new InventoryConsumedEvent(orderId, materials));
   }
 
   async getAll() {

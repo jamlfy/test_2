@@ -4,8 +4,8 @@ import { OrderController } from './order.controller';
 import { OrderProcessor } from './order.processor';
 import { QueueService } from './queue.service';
 import { OrderService } from '../application/order.service';
-import { OrderRepository } from '../domain/order.repository';
 import { OrderRepositoryImpl } from './order.repository.impl';
+import { ShopifyWebhookGuard } from './shopify-webhook.guard';
 import { InventoryModule } from '@test_2/backend-inventory';
 import { PackagingModule } from '@test_2/backend-packaging';
 import { QUEUE_NAMES } from '@test_2/share-utils';
@@ -16,6 +16,10 @@ import { QUEUE_NAMES } from '@test_2/share-utils';
     PackagingModule,
     BullModule.registerQueue({
       name: QUEUE_NAMES.ORDERS,
+      connection: {
+        host: process.env.REDIS_HOST || 'localhost',
+        port: parseInt(process.env.REDIS_PORT || '6379', 10),
+      },
     }),
   ],
   controllers: [OrderController],
@@ -23,6 +27,7 @@ import { QUEUE_NAMES } from '@test_2/share-utils';
     OrderService,
     QueueService,
     OrderProcessor,
+    ShopifyWebhookGuard,
     {
       provide: 'OrderRepository',
       useClass: OrderRepositoryImpl,

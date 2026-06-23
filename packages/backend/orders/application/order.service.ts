@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { OrderStatus, ShopifyWebhookPayload } from '@test_2/share-types';
 import { OrderRepository, OrderFilter } from '../domain/order.repository';
-import { OrderEntity, OrderItemProps } from '../domain/order.entity';
+import { OrderItemProps } from '../domain/order.entity';
 import { OrderReceivedEvent } from '../domain/events/order-received.event';
 import { OrderCompletedEvent } from '../domain/events/order-completed.event';
 import { OrderFailedEvent } from '../domain/events/order-failed.event';
@@ -17,7 +17,10 @@ export class OrderService {
     private readonly queueService: QueueService,
   ) {}
 
-  async processWebhook(payload: ShopifyWebhookPayload, storeName: string): Promise<{ id: string; duplicate: boolean }> {
+  async processWebhook(
+    payload: ShopifyWebhookPayload,
+    storeName: string,
+  ): Promise<{ id: string; duplicate: boolean }> {
     const existing = await this.orderRepo.findByShopifyId(payload.id);
 
     if (existing) {
@@ -40,7 +43,7 @@ export class OrderService {
       items,
       payload.customer
         ? `${payload.customer.first_name} ${payload.customer.last_name}`.trim()
-        : null,
+        : `NO_NAME`,
       payload.customer?.email || payload.contact_email || payload.email || null,
     );
 
@@ -49,10 +52,7 @@ export class OrderService {
       storeName,
     });
 
-    this.eventEmitter.emit(
-      'order.received',
-      new OrderReceivedEvent(order.id, payload.id, items),
-    );
+    this.eventEmitter.emit('order.received', new OrderReceivedEvent(order.id, payload.id, items));
 
     await this.queueService.addOrderJob(order.id);
 
@@ -80,11 +80,7 @@ export class OrderService {
     return summary;
   }
 
-  async updateOrderStatus(
-    orderId: string,
-    status: OrderStatus,
-    errorMessage?: string | null,
-  ) {
+  async updateOrderStatus(orderId: string, status: OrderStatus, errorMessage?: string | null) {
     await this.orderRepo.updateStatus(orderId, status, errorMessage);
 
     if (status === OrderStatus.COMPLETED) {
@@ -103,7 +99,11 @@ export class OrderService {
       if (order) {
         this.eventEmitter.emit(
           'order.failed',
-          new OrderFailedEvent(orderId, Number(order.shopifyOrderId), errorMessage || 'Error desconocido'),
+          new OrderFailedEvent(
+            orderId,
+            Number(order.shopifyOrderId),
+            errorMessage || 'Error desconocido',
+          ),
         );
       }
     }

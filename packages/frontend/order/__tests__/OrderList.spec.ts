@@ -7,43 +7,15 @@ jest.mock('vue-router', () => ({
   useRouter: () => ({ push: jest.fn() }),
 }));
 
-jest.mock('@shopify/polaris', () => {
-  const { h } = require('vue');
-  const slotRenderer = (name) => ({
-    name,
-    props: ['heading'],
-    render() {
-      const slot = this.$slots.default;
-      const children = [];
-      if (this.heading) {
-        children.push(h('h2', { class: `mock-${name}-heading` }, String(this.heading)));
-      }
-      if (slot) {
-        children.push(...slot());
-      }
-      return h('div', { class: `mock-${name}` }, children);
-    },
-  });
-  return {
-    Card: slotRenderer('Card'),
-    TextField: slotRenderer('TextField'),
-    Select: slotRenderer('Select'),
-    Spinner: slotRenderer('Spinner'),
-    Banner: slotRenderer('Banner'),
-    Button: slotRenderer('Button'),
-    EmptyState: slotRenderer('EmptyState'),
-    Badge: slotRenderer('Badge'),
-  };
-});
-
 jest.mock('../StatusBadge.vue', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { h } = require('vue');
   return {
     default: {
       name: 'StatusBadge',
-      render() {
-        const slot = this.$slots.default;
-        return h('span', { class: 'mock-status-badge' }, slot ? slot() : []);
+      props: { status: { type: String, default: '' } },
+      render(this: Record<string, unknown>) {
+        return h('span', { class: 'mock-status-badge' }, [String(this.status || '')]);
       },
     },
   };
@@ -71,6 +43,11 @@ function mountOrderList(options?: { storeOverrides?: Record<string, any>; limit?
     props: { limit: options?.limit || 20 },
     global: {
       plugins: [pinia],
+      config: {
+        compilerOptions: {
+          isCustomElement: (tag: string) => tag.startsWith('s-'),
+        },
+      },
     },
   });
 }

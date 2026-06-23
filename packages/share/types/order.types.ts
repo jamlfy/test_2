@@ -47,4 +47,5 @@ export interface OrderFilterDto {
   limit?: number;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
+  search?: string;
 }

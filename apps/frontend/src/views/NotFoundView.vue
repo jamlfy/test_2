@@ -1,14 +1,9 @@
 <template>
-  <Page title="404">
-    <EmptyState
-      heading="Página no encontrada"
-      action={{ content: 'Volver al dashboard', url: '/' }}
-    >
-      <p>La página que buscas no existe.</p>
-    </EmptyState>
-  </Page>
+  <s-page heading="404">
+    <s-stack gap="base" padding="large" style="text-align: center">
+      <s-heading>Página no encontrada</s-heading>
+      <s-text>La página que buscas no existe.</s-text>
+      <s-button href="/">Volver al dashboard</s-button>
+    </s-stack>
+  </s-page>
 </template>
-
-<script setup lang="ts">
-import { Page, EmptyState } from '@shopify/polaris';
-</script>

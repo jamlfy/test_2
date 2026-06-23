@@ -1,60 +1,93 @@
 <template>
   <div v-if="store.loading && !store.totalOrders" class="loading-state">
-    <Spinner size="large" />
+    <s-spinner accessibility-label="Cargando resumen" size="large" />
   </div>
 
   <div v-else-if="store.error && !store.totalOrders">
-    <Banner status="critical">
+    <s-banner tone="critical">
       <p>{{ store.error }}</p>
-      <Button @click="store.fetchSummary()">Reintentar</Button>
-    </Banner>
+      <s-button variant="secondary" @click="store.fetchSummary()"> Reintentar </s-button>
+    </s-banner>
   </div>
 
   <div v-else class="summary-grid">
-    <Card>
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
-        <Text variant="headingXl" as="p" alignment="center">{{ store.totalOrders }}</Text>
-        <Text variant="bodyMd" as="p" alignment="center" color="subdued">Total Órdenes</Text>
+        <s-heading>{{ store.totalOrders }}</s-heading>
+        <s-text color="subdued">Total Órdenes</s-text>
       </div>
-    </Card>
-    <Card>
+    </s-box>
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
-        <Text variant="headingXl" as="p" alignment="center" color="success">{{ store.completedOrders }}</Text>
-        <Text variant="bodyMd" as="p" alignment="center" color="subdued">Completadas</Text>
+        <s-heading>{{ store.completedOrders }}</s-heading>
+        <s-text color="subdued">Completadas</s-text>
       </div>
-    </Card>
-    <Card>
+    </s-box>
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
-        <Text variant="headingXl" as="p" alignment="center" color="critical">{{ store.failedOrders }}</Text>
-        <Text variant="bodyMd" as="p" alignment="center" color="subdued">Fallidas</Text>
+        <s-heading>{{ store.failedOrders }}</s-heading>
+        <s-text color="subdued">Fallidas</s-text>
       </div>
-    </Card>
-    <Card>
+    </s-box>
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
-        <Text variant="headingXl" as="p" alignment="center">{{ store.pendingOrders }}</Text>
-        <Text variant="bodyMd" as="p" alignment="center" color="subdued">Pendientes</Text>
+        <s-heading>{{ store.pendingOrders }}</s-heading>
+        <s-text color="subdued">Pendientes</s-text>
       </div>
-    </Card>
-    <Card>
+    </s-box>
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
-        <Text variant="headingXl" as="p" alignment="center" color="attention">{{ store.processingOrders }}</Text>
-        <Text variant="bodyMd" as="p" alignment="center" color="subdued">Procesando</Text>
+        <s-heading>{{ store.processingOrders }}</s-heading>
+        <s-text color="subdued">Procesando</s-text>
       </div>
-    </Card>
-    <Card>
+    </s-box>
+    <s-box
+      padding="base"
+      background="base"
+      border-width="base"
+      border-color="base"
+      border-radius="base"
+    >
       <div class="summary-card">
-        <Text variant="headingXl" as="p" alignment="center" :color="store.lowStockMaterials > 0 ? 'critical' : 'success'">
-          {{ store.lowStockMaterials }}
-        </Text>
-        <Text variant="bodyMd" as="p" alignment="center" color="subdued">Materiales Críticos</Text>
+        <s-heading>{{ store.lowStockMaterials }}</s-heading>
+        <s-text color="subdued">Materiales Críticos</s-text>
       </div>
-    </Card>
+    </s-box>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
-import { Card, Text, Spinner, Banner, Button } from '@shopify/polaris';
 import { useSummaryStore } from './store';
 
 const store = useSummaryStore();

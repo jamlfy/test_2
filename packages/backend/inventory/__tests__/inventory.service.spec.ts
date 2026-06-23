@@ -1,7 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { InventoryService, InventoryError, InventoryConsumedEvent, InventoryInsufficientEvent } from '../application/inventory.service';
-import { InventoryRepository, ConsumeResult } from '../domain/inventory.repository';
+import {
+  InventoryService,
+  InventoryError,
+  InventoryConsumedEvent,
+  InventoryInsufficientEvent,
+} from '../application/inventory.service';
+import { InventoryRepository } from '../domain/inventory.repository';
 
 describe('InventoryService', () => {
   let service: InventoryService;
@@ -56,9 +61,7 @@ describe('InventoryService', () => {
         failedReason: 'Stock insuficiente para BOX_SMALL. Requerido: 1',
       });
 
-      await expect(service.consumeMaterials('order-1', materials))
-        .rejects
-        .toThrow(InventoryError);
+      await expect(service.consumeMaterials('order-1', materials)).rejects.toThrow(InventoryError);
 
       expect(eventEmitter.emit).toHaveBeenCalledWith(
         'inventory.insufficient',
@@ -77,6 +80,7 @@ describe('InventoryService', () => {
         await service.consumeMaterials('order-1', materials);
       } catch (e) {
         // expected
+        console.log('Error', e);
       }
 
       expect(eventEmitter.emit).toHaveBeenCalledWith(

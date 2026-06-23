@@ -7,6 +7,9 @@ SEED_DIR="packages/prisma"
 echo "Generating Prisma Client..."
 npx prisma generate --schema=$SCHEMA
 
+echo "Copying Prisma engine to dist..."
+cp /app/node_modules/.prisma/client/libquery_engine-*.so.node /app/apps/backend/
+
 echo "Pushing database schema..."
 npx prisma db push --schema=$SCHEMA --accept-data-loss 2>&1
 

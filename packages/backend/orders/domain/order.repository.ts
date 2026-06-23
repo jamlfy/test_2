@@ -32,6 +32,7 @@ export interface OrderFilter {
   limit: number;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
+  search?: string;
 }
 
 export interface PaginatedOrders {
